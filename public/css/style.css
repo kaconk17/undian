@@ -42,7 +42,7 @@
 	border-top:1px solid #ccc;
 	border-right:1px solid #ccc;
     width: 100%;
-   
+   text-align: center;
 }
 form{
 	padding: 0 2em;
@@ -79,4 +79,8 @@ form{
 .btn:hover, .btn:focus{
 	background-color: #008080;
 	color:#fff;
+}
+
+.footer{
+    text-align: center;
 }
