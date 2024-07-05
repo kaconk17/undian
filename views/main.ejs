@@ -15,9 +15,13 @@
                 <img src="static/img/NPMI_Logo.png" alt="Bootstrap" width="80" height="80">
                 PT. NPR Manufacturing Indonesia
               </a>
+              <form class="d-flex" role="search">
+                <button class="btn btn-outline-danger" id="btn_logout" type="submit">Logout</button>
+              </form>
             </div>
           </nav>
         <div class="row text-center">
+            
             <div>
                 <h2>Undian</h2>
             </div>
@@ -80,6 +84,15 @@
        </div>
     </div>
 
+    <script type="text/javascript">
+        var appurl = '<%= app_url %>';
+
+        var token = localStorage.getItem('undian_token');
+
+if (!token) {
+	window.location.href=appurl;
+}
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script type="text/javascript" src="static/js/main.js"></script>
 </body>

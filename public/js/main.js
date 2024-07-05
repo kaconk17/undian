@@ -1,6 +1,7 @@
 var btn_check = document.getElementById('btn-check');
 var nik = document.getElementById('nik');
 const btn_save = document.getElementById('btn-save');
+const btn_logout = document.getElementById('btn_logout');
 
 var ardat = ['0928','2373','00923','36389','9208','27739'];
 
@@ -16,6 +17,12 @@ btn_check.addEventListener("click", function(){
 
 btn_save.addEventListener("click", function(){
     
+});
+
+btn_logout.addEventListener("click",function(e){
+    e.preventDefault();
+  	localStorage.removeItem('undian_token');
+  	window.location.href = appurl;
 });
 function randomcheck(i=0,howmany){
 
