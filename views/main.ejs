@@ -54,18 +54,27 @@
                 </div>
             </div>
         </div>
-       <div class="row">
-            <div class="col-md-2">
-                <label for="">Hadiah</label>
-                <select class="form-select" name="" id="hadiah">
+        <div class="row text-center" style="margin-top:1%;">
+            <div>
+                <h2 id="tot_peserta"></h2>
+            </div>
+        </div>
+       <div class="row align-items-center justify-content-md-center" style="margin-top:3%;">
+           <div class="col-md-2 text-end">
+
+                <label for="">Hadiah : </label>
+           </div>
+           <div class="col-md-4">
+                <select class="form-select" onchange="getHadiah()" name="" id="hadiah">
                     <option value="">---pilih hadiah----</option>
                     <% for(var i=0; i < hadiah.length; i++) { %>
                     <option value="<%= hadiah[i].id %>"><%= hadiah[i].hadiah %></option>
                     <% } %>
                 </select>
             </div>
+
        </div>
-       <div class="row justify-content-md-center" style="margin-top: 8%;">
+       <div class="row justify-content-md-center" style="margin-top: 4%;margin-bottom:5%;">
         <div class="card col-md-8">
             <div class="card-body">
                 <h5 class="card-title">Pemenang Undian</h5>
