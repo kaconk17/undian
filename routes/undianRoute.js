@@ -10,10 +10,10 @@ const {
   deleteHadiah,
 } = require("../controllers/undianController");
 
-router.post("/hadiah/create", createHadiah);
-router.get("/hadiah/getall", getAllhadiah);
-router.get("/hadiah/geta/:Id", getHadiah);
-router.put("/hadiah/update/:Id", updateHadiah);
-router.delete("/hadiah/del/:Id", deleteHadiah);
+router.post("/hadiah/create", verifyAuth, createHadiah);
+router.get("/hadiah/getall", verifyAuth, getAllhadiah);
+router.get("/hadiah/get/:Id", verifyAuth, getHadiah);
+router.put("/hadiah/update/:Id", verifyAuth, updateHadiah);
+router.delete("/hadiah/del/:Id", verifyAuth, deleteHadiah);
 
 module.exports = router;

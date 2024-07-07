@@ -32,14 +32,37 @@
                       <button class="btn btn-success" id="btn_add" data-bs-toggle="modal" data-bs-target="#modal1" type="button">Tambah</button>
                     </di>
                     </div>
-                    <table class="table" id="tb_pemenang">
+                    <table class="table" id="tb_hadiah">
                     <thead>
                         <th>NO.</th>
                         <th>Kode</th>
                         <th>Hadiah</th>
                         <th>Qty</th>
+                        <th>Action</th>
                     </dihead>
-                    <tbody>
+                    <tbody id="list_hadiah">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+       </div>
+
+       <div class="row justify-content-md-center" style="margin-top: 8%;">
+        <div class="card col-md-8">
+            <div class="card-body">
+                <h5 class="card-title" id="karyawan_title">Data Karyawan</h5>
+                <div class="row">
+                    </div>
+                    <table class="table" id="tb_karyawan">
+                    <thead>
+                        <th>NO.</th>
+                        <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Departemen</th>
+
+                    </dihead>
+                    <tbody id="list_karyawan">
 
                     </tbody>
                 </table>
@@ -78,9 +101,9 @@
 
         var token = localStorage.getItem('undian_token');
 
-//if (!token) {
-//	window.location.href=appurl;
-//}
+if (!token) {
+	window.location.href=appurl;
+}
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script type="text/javascript" src="static/js/settings.js"></script>

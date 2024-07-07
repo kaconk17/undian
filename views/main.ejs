@@ -21,7 +21,7 @@
             </div>
           </nav>
         <div class="row text-center">
-            
+
             <div>
                 <h2>Undian</h2>
             </div>
@@ -54,11 +54,11 @@
        <div class="row">
             <div class="col-md-2">
                 <label for="">Hadiah</label>
-                <select class="form-select" name="" id="">
+                <select class="form-select" name="" id="hadiah">
                     <option value="">---pilih hadiah----</option>
-                    <option value="">Hiburan 1</option>
-                    <option value="">Hiburan 2</option>
-                    <option value="">Hiburan 3</option>
+                    <% for(var i=0; i < hadiah.length; i++) { %>
+                    <option value="<%= hadiah[i].id %>"><%= hadiah[i].hadiah %></option>
+                    <% } %>
                 </select>
             </div>
        </div>

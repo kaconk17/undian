@@ -1,5 +1,15 @@
 const { pool } = require("../config/connection");
 
+const moment = require("moment");
+
+const {
+  hashPassword,
+  generateUserToken,
+} = require("../middlewares/validation");
+
+const { v4: uuidv4 } = require("uuid");
+require("dotenv").config();
+
 pool.on("connect", () => {
   console.log("berhasil koneksi ke DB");
 });
@@ -75,6 +85,31 @@ const createAllTable = () => {
   createUndianTable();
 };
 
+const createUser = async () => {
+  const nama = process.env.NAMA_USER;
+  const email = process.env.EMAIL_USER;
+  const password = process.env.PASS_USER;
+  const created_on = moment(new Date());
+
+  const id = uuidv4();
+  const hashedPassword = hashPassword(password);
+  const createUserQuery = `INSERT INTO
+      tb_users(id, nama, email, password, created_at)
+      VALUES($1, $2, $3, $4, $5)
+      returning *`;
+  const values = [id, nama, email, hashedPassword, created_on];
+  pool
+    .query(createUserQuery, values)
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+    });
+};
+
 pool.on("remove", () => {
   console.log("client removed");
   process.exit(0);
@@ -82,8 +117,13 @@ pool.on("remove", () => {
 
 module.exports = {
   createAllTable,
+  createUser,
 };
 
 if (process.argv[2] === "createAllTable") {
   createAllTable();
+}
+
+if (process.argv[2] === "createUser") {
+  createUser();
 }

@@ -75,12 +75,12 @@ const getHadiah = async (req, res) => {
 
 const updateHadiah = async (req, res) => {
   const { Id } = req.params;
-  const { nama_hadiah, qty } = req.body;
+  const { hadiah, qty } = req.body;
   if (isEmpty(Id)) {
     errorMessage.error = "ID tidak boleh kosong";
     return res.status(status.bad).send(errorMessage);
   }
-  if (isEmpty(nama_hadiah)) {
+  if (isEmpty(hadiah)) {
     errorMessage.error = "Nama hadiah tidak boleh kosong";
     return res.status(status.bad).send(errorMessage);
   }
@@ -91,7 +91,7 @@ const updateHadiah = async (req, res) => {
   const getInQuery =
     "UPDATE tb_hadiah SET hadiah = $1, qty = $2 WHERE id = $3 returning *";
   try {
-    const { rows } = await pool.query(getInQuery, [nama_hadiah, qty, Id]);
+    const { rows } = await pool.query(getInQuery, [hadiah, qty, Id]);
     const inResponse = rows[0];
     if (!inResponse) {
       errorMessage.error = "ID tidak valid";
