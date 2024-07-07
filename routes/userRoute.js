@@ -18,7 +18,7 @@ require("dotenv").config();
 const appUrl = process.env.APP_URL;
 // users Routes
 
-router.post("/auth/signup", createUser);
+router.post("/auth/signup", verifyAuth, createUser);
 router.post("/auth/signin", siginUser);
 router.post("/auth/getuser", verifyAuth, getUser);
 router.get("/karyawan/getall", verifyAuth, getAllkaryawan);

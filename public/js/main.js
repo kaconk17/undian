@@ -30,6 +30,8 @@ fetch(appurl + "/karyawan/getundi", {
         ardat.push(res.data[i].nik);
         namdat.push(res.data[i].nama);
       }
+      document.getElementById("tot_peserta").innerHTML =
+        "Total Peserta : " + ardat.length + " Orang";
     } else {
       alert(res.error);
     }
@@ -82,10 +84,16 @@ btn_check.addEventListener("click", function () {
   if (selHadiah.value == "" || ardat.length == 0) {
     alert("Hadiah belum dipilih!");
   } else {
+    btn_check.disabled = true;
+    btn_save.disabled = true;
+
     randomcheck(0, 30);
   }
 });
 
+function getHadiah() {
+  prize = selHadiah.value;
+}
 btn_save.addEventListener("click", function () {
   if (winner == "") {
     alert("Pemenang belum dipilih !");
@@ -149,6 +157,8 @@ function randomcheck(i = 0, howmany) {
         clearInterval(blinkingInterval);
 
         bgBlink.style.backgroundColor = colors[0];
+        btn_check.disabled = false;
+        btn_save.disabled = false;
       }, 2000);
     }
   }, 80);
