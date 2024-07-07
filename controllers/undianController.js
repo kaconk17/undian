@@ -121,10 +121,56 @@ const deleteHadiah = async (req, res) => {
   }
 };
 
+const createUndian = async (req, res) => {
+  const { hadiah, nik } = req.body;
+
+  if (isEmpty(hadiah)) {
+    errorMessage.error = "Nama hadiah tidak boleh kosong";
+    return res.status(status.bad).send(errorMessage);
+  }
+  if (empty(nik)) {
+    errorMessage.error = "NIK tidak boleh kosong";
+    return res.status(status.bad).send(errorMessage);
+  }
+
+  const created_on = moment(new Date());
+  const createInQuery = `INSERT INTO
+      tb_undian (nik, id_hadiah, created_at)
+      VALUES($1, $2, $3) returning *`;
+  const values = [nik, hadiah, created_on];
+  try {
+    const response = await pool.query(createInQuery, values);
+    const Response = response.rows[0];
+    successMessage.data = Response;
+    return res.status(status.created).send(successMessage);
+  } catch (error) {
+    errorMessage.error = "Create Undian gagal";
+    return res.status(status.error).send(errorMessage);
+  }
+};
+
+const getAllUndian = async (req, res) => {
+  const getHadiahQuery =
+    "select a.nik, b.nama ,b.departemen , c.hadiah , to_char(a.created_at, 'YYYY-MM-DD HH24:MI') as tgl  from tb_undian a join tb_karyawan b on a.nik = b.nik join tb_hadiah c on a.id_hadiah = c.id";
+
+  try {
+    const { rows } = await pool.query(getHadiahQuery);
+    const Response = rows;
+
+    successMessage.data = Response;
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    errorMessage.error = "Operation was not successful";
+    return res.status(status.error).send(errorMessage);
+  }
+};
+
 module.exports = {
   createHadiah,
   getAllhadiah,
   getHadiah,
   updateHadiah,
   deleteHadiah,
+  createUndian,
+  getAllUndian,
 };
