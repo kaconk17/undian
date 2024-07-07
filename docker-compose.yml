@@ -9,6 +9,7 @@ services:
     networks:
       - mynet
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ./data:/var/lib/postgresql/data
   undian:
     build:
@@ -22,6 +23,8 @@ services:
       - 8080:3000
     networks:
       - mynet
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 networks:
   mynet:
     external: true
