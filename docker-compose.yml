@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - mynet
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  undian:
+    build:
+      context: .
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+    ports:
+      - 8080:3000
+    networks:
+      - mynet
+networks:
+  mynet:
+    external: true
+    name: proxy-net

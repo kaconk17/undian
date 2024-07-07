@@ -2,10 +2,7 @@ const { pool } = require("../config/connection");
 
 const moment = require("moment");
 
-const {
-  hashPassword,
-  generateUserToken,
-} = require("../middlewares/validation");
+const { hashPassword } = require("../middlewares/validation");
 
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
@@ -14,11 +11,11 @@ pool.on("connect", () => {
   console.log("berhasil koneksi ke DB");
 });
 
-const createUserTable = () => {
+const createUserTable = async () => {
   const userCreateQuery =
     "CREATE TABLE IF NOT EXISTS tb_users (id UUID PRIMARY KEY,nama VARCHAR(100) NOT NULL,email VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100) NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
 
-  pool
+  await pool
     .query(userCreateQuery)
     .then((res) => {
       console.log(res);
@@ -30,11 +27,11 @@ const createUserTable = () => {
     });
 };
 
-const createKaryawantTable = () => {
+const createKaryawantTable = async () => {
   const dompetCreateQuery =
     "CREATE TABLE IF NOT EXISTS tb_karyawan (nik VARCHAR(50) PRIMARY KEY,nama VARCHAR(100) NOT NULL,departemen VARCHAR(100) NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
 
-  pool
+  await pool
     .query(dompetCreateQuery)
     .then((res) => {
       console.log(res);
@@ -46,11 +43,11 @@ const createKaryawantTable = () => {
     });
 };
 
-const createHadiahTable = () => {
+const createHadiahTable = async () => {
   const dompetCreateQuery =
     "CREATE TABLE IF NOT EXISTS tb_hadiah (id SERIAL PRIMARY KEY,hadiah VARCHAR(100) NOT NULL, qty INT NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
 
-  pool
+  await pool
     .query(dompetCreateQuery)
     .then((res) => {
       console.log(res);
@@ -62,11 +59,11 @@ const createHadiahTable = () => {
     });
 };
 
-const createUndianTable = () => {
+const createUndianTable = async () => {
   const dompetCreateQuery =
     "CREATE TABLE IF NOT EXISTS tb_undian (id SERIAL PRIMARY KEY,nik VARCHAR(50) REFERENCES tb_karyawan(nik) ON DELETE CASCADE,id_hadiah int NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
 
-  pool
+  await pool
     .query(dompetCreateQuery)
     .then((res) => {
       console.log(res);
@@ -98,7 +95,7 @@ const createUser = async () => {
       VALUES($1, $2, $3, $4, $5)
       returning *`;
   const values = [id, nama, email, hashedPassword, created_on];
-  pool
+  await pool
     .query(createUserQuery, values)
     .then((res) => {
       console.log(res);
