@@ -28,7 +28,9 @@ fetch(appurl + "/hadiah/getall", {
           res.data[i].hadiah +
           "</td><td>" +
           res.data[i].qty +
-          "</td><td><button class='btn btn-danger' onClick='del_row(" +
+          "</td><td><img src='static/img/" +
+          res.data[i].gambar +
+          "' class='img-fluid' style='heigth:50px;width:50px;'></td><td><button class='btn btn-danger' onClick='del_row(" +
           res.data[i].id +
           ")' type='button'>Del</button></td></tr>";
         tblist.insertAdjacentHTML("beforeend", newrow);
@@ -86,20 +88,20 @@ frmHadiah.addEventListener("submit", function (e) {
   if (nama_hadiah.value == "" || qty.value == "") {
     alert("Data belum lengkap !");
   } else {
-    const formData = new FormData(document.querySelector('#frm_hadiah'));
+    const formData = new FormData(document.querySelector("#frm_hadiah"));
     // let postObj = {
     //   hadiah: nama_hadiah.value,
     //   qty: qty.value,
     // };
     // let post = JSON.stringify(postObj);
-    console.log(formData);
+
     const url = appurl + "/hadiah/create";
     fetch(url, {
       method: "post",
       body: formData,
       headers: {
         //Accept: "application/json",
-        "Content-Type": "multipart/form-data",
+        //"Content-Type": "multipart/form-data",
         Authorization: localStorage.getItem("undian_token"),
       },
     })

@@ -65,39 +65,35 @@ const upload = async (req, res) => {
 const uploadImg = async (req, res) => {
   try {
     if (req.file == undefined) {
-      return res.status(400).send("Please upload a CSV file!");
+      return res.status(400).send("Please upload a jpg file!");
     }
-    let filepath = path.join(
-      __dirname,
-      "../public/img/" + req.file.filename,
-    );
+    let filepath = path.join(__dirname, "../public/img/" + req.file.filename);
 
     const { hadiah, qty } = req.body;
 
-  if (isEmpty(hadiah)) {
-    errorMessage.error = "Nama hadiah tidak boleh kosong";
-    return res.status(status.bad).send(errorMessage);
-  }
-  if (empty(qty)) {
-    errorMessage.error = "Qty tidak boleh kosong";
-    return res.status(status.bad).send(errorMessage);
-  }
+    if (isEmpty(hadiah)) {
+      errorMessage.error = "Nama hadiah tidak boleh kosong";
+      return res.status(status.bad).send(errorMessage);
+    }
+    if (empty(qty)) {
+      errorMessage.error = "Qty tidak boleh kosong";
+      return res.status(status.bad).send(errorMessage);
+    }
 
-  const created_on = moment(new Date());
-  const createInQuery = `INSERT INTO
+    const created_on = moment(new Date());
+    const createInQuery = `INSERT INTO
       tb_hadiah (hadiah, qty, gambar, created_at)
       VALUES($1, $2, $3,$4) returning *`;
-  const values = [hadiah, qty,req.file.filename, created_on];
-  try {
-    const response = await pool.query(createInQuery, values);
-    const Response = response.rows[0];
-    successMessage.data = Response;
-    return res.status(status.created).send(successMessage);
-  } catch (error) {
-    errorMessage.error = "Create hadiah gagal";
-    return res.status(status.error).send(errorMessage);
-  }
-
+    const values = [hadiah, qty, req.file.filename, created_on];
+    try {
+      const response = await pool.query(createInQuery, values);
+      const Response = response.rows[0];
+      successMessage.data = Response;
+      return res.status(status.created).send(successMessage);
+    } catch (error) {
+      errorMessage.error = "Create hadiah gagal";
+      return res.status(status.error).send(errorMessage);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -105,7 +101,6 @@ const uploadImg = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   upload,

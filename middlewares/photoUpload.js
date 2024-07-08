@@ -1,5 +1,5 @@
 const multer = require("multer");
-const path = require('path');
+const path = require("path");
 
 // const jpgFilter = (req, file, cb) => {
 //   if (file.mimetype.includes("jpg")) {
@@ -11,11 +11,12 @@ const path = require('path');
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../public/img'));
+    cb(null, path.join(__dirname, "../public/img"));
   },
   filename: (req, file, cb) => {
+    const { ext } = path.parse(file.originalname);
     console.log(file.originalname);
-    cb(null, `${Date.now()}-npmi-${file.originalname}`);
+    cb(null, `${Date.now()}-img${ext}`);
   },
 });
 

@@ -7,6 +7,8 @@ const {
   successMessage,
   status,
 } = require("../middlewares/status");
+const fs = require("fs");
+const path = require("path");
 
 const createHadiah = async (req, res) => {
   const { hadiah, qty } = req.body;
@@ -110,10 +112,18 @@ const deleteHadiah = async (req, res) => {
     errorMessage.error = "ID tidak boleh kosong";
     return res.status(status.bad).send(errorMessage);
   }
+
+  const findquery = "SELECT * FROM tb_hadiah WHERE id = $1";
+
   const delQuery = "DELETE FROM tb_hadiah WHERE id = $1";
   try {
+    const { rows } = await pool.query(findquery, [Id]);
+    const dbResponse = rows[0];
+    var gambar = dbResponse.gambar;
+    let filepath = path.join(__dirname, "../public/img/" + gambar);
     await pool.query(delQuery, [Id]);
     successMessage.data.message = "Hapus data berhasil";
+    fs.unlinkSync(filepath);
     return res.status(status.success).send(successMessage);
   } catch (error) {
     errorMessage.error = "Operation was not successful";

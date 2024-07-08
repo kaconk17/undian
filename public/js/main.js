@@ -4,6 +4,8 @@ const btn_save = document.getElementById("btn-save");
 const btn_logout = document.getElementById("btn_logout");
 const selHadiah = document.getElementById("hadiah");
 const winName = document.getElementById("nama_pemenang");
+const jHadiah = document.getElementById("jHadiah");
+const imgHadiah = document.getElementById("imgHadiah");
 
 var ardat = [];
 var namdat = [];
@@ -90,7 +92,7 @@ btn_check.addEventListener("click", function () {
       undi = false;
       btn_check.innerHTML = "Start";
       btn_check.className = "btn btn-success btn-lg";
-    }else{
+    } else {
       undi = true;
       btn_check.innerHTML = "Stop";
       btn_check.className = "btn btn-danger btn-lg";
@@ -103,6 +105,32 @@ btn_check.addEventListener("click", function () {
 
 function getHadiah() {
   prize = selHadiah.value;
+  jHadiah.innerHTML = selHadiah.selectedOptions[0].text;
+
+  fetch(appurl + "/hadiah/get/" + prize, {
+    method: "get",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("undian_token"),
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((res) => {
+      if (res.status == "success") {
+        imgHadiah.innerHTML =
+          "<img src='static/img/" +
+          res.data.gambar +
+          "' class='img-thumbnail'>";
+      } else {
+        alert(res.error);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 btn_save.addEventListener("click", function () {
   if (winner == "") {
