@@ -9,6 +9,7 @@ var ardat = [];
 var namdat = [];
 var winner = "";
 var prize = "";
+var undi = false;
 
 const colors = ["#9966ff", "white"];
 const bgBlink = document.getElementById("display_body");
@@ -84,10 +85,19 @@ btn_check.addEventListener("click", function () {
   if (selHadiah.value == "" || ardat.length == 0) {
     alert("Hadiah belum dipilih!");
   } else {
-    btn_check.disabled = true;
+    //btn_check.disabled = true;
+    if (undi) {
+      undi = false;
+      btn_check.innerHTML = "Start";
+      btn_check.className = "btn btn-success btn-lg";
+    }else{
+      undi = true;
+      btn_check.innerHTML = "Stop";
+      btn_check.className = "btn btn-danger btn-lg";
+    }
     btn_save.disabled = true;
 
-    randomcheck(0, 30);
+    randomcheck();
   }
 });
 
@@ -139,7 +149,7 @@ btn_logout.addEventListener("click", function (e) {
   localStorage.removeItem("undian_token");
   window.location.href = appurl;
 });
-function randomcheck(i = 0, howmany) {
+function randomcheck() {
   winner = "";
   prize = "";
   bgBlink.style.backgroundColor = colors[1];
@@ -149,8 +159,7 @@ function randomcheck(i = 0, howmany) {
     prize = selHadiah.value;
     nik.innerHTML = winner;
     winName.innerHTML = namdat[indx];
-    i++;
-    if (i == howmany) {
+    if (!undi) {
       clearInterval(interval);
       const blinkingInterval = setInterval(blinkBackground, 100);
       setTimeout(() => {

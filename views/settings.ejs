@@ -83,14 +83,18 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="frm_hadiah">
+            <form id="frm_hadiah" enctype="multipart/form-data">
                 <div class="mb-3">
                   <label for="formFile" class="form-label">Nama Hadiah</label>
-                  <input class="form-control" type="text" id="nama_hadiah" required>
+                  <input class="form-control" name="hadiah" type="text" id="nama_hadiah" required>
                 </div>
                 <div class="mb-2">
                   <label for="formFileMultiple" class="form-label">Qty</label>
-                  <input class="form-control" type="number" id="qty_hadiah" required>
+                  <input class="form-control" name="qty" type="number" id="qty_hadiah" required>
+                </div>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="inputGroupFile01">Photo</label>
+                  <input type="file" name="file" class="form-control" id="gambar_hadiah">
                 </div>
           </div>
           <div class="modal-footer">

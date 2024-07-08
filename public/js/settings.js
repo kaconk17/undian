@@ -86,18 +86,20 @@ frmHadiah.addEventListener("submit", function (e) {
   if (nama_hadiah.value == "" || qty.value == "") {
     alert("Data belum lengkap !");
   } else {
-    let postObj = {
-      hadiah: nama_hadiah.value,
-      qty: qty.value,
-    };
-    let post = JSON.stringify(postObj);
+    const formData = new FormData(document.querySelector('#frm_hadiah'));
+    // let postObj = {
+    //   hadiah: nama_hadiah.value,
+    //   qty: qty.value,
+    // };
+    // let post = JSON.stringify(postObj);
+    console.log(formData);
     const url = appurl + "/hadiah/create";
     fetch(url, {
       method: "post",
-      body: post,
+      body: formData,
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        //Accept: "application/json",
+        "Content-Type": "multipart/form-data",
         Authorization: localStorage.getItem("undian_token"),
       },
     })

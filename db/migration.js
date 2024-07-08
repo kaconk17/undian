@@ -45,7 +45,7 @@ const createKaryawantTable = async () => {
 
 const createHadiahTable = async () => {
   const dompetCreateQuery =
-    "CREATE TABLE IF NOT EXISTS tb_hadiah (id SERIAL PRIMARY KEY,hadiah VARCHAR(100) NOT NULL, qty INT NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
+    "CREATE TABLE IF NOT EXISTS tb_hadiah (id SERIAL PRIMARY KEY,hadiah VARCHAR(100) NOT NULL, qty INT NOT NULL, gambar VARCHAR(100), created_at TIMESTAMP,updated_at TIMESTAMP)";
 
   await pool
     .query(dompetCreateQuery)
