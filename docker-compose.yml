@@ -19,8 +19,6 @@ services:
       - ./.env
     depends_on:
       - postgres
-    ports:
-      - 8080:3000
     networks:
       - mynet
     volumes:
@@ -28,4 +26,4 @@ services:
 networks:
   mynet:
     external: true
-    name: proxy-net
+    name: proxy_net
