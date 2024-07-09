@@ -121,6 +121,7 @@ btn_check.addEventListener("click", function () {
       btn_check.className = "btn btn-danger btn-lg";
     }
     btn_save.disabled = true;
+    btnDis.disabled = true;
 
     randomcheck();
   }
@@ -202,6 +203,7 @@ function randomcheck() {
         bgBlink.style.backgroundColor = colors[0];
         btn_check.disabled = false;
         btn_save.disabled = false;
+        btnDis.disabled = false;
       }, 2000);
     }
   }, 80);
