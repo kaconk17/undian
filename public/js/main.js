@@ -6,6 +6,7 @@ const selHadiah = document.getElementById("hadiah");
 const winName = document.getElementById("nama_pemenang");
 const jHadiah = document.getElementById("jHadiah");
 const imgHadiah = document.getElementById("imgHadiah");
+const btnDis = document.getElementById("btn-dis");
 
 var ardat = [];
 var namdat = [];
@@ -57,11 +58,31 @@ fetch(appurl + "/undian/getall", {
   .then((res) => {
     if (res.status == "success") {
       var pemenang = document.getElementById("list_pemenang");
+      var dis = document.getElementById("list_dis");
       var nomer = 1;
+      var nomer1 = 1;
       for (let i = 0; i < res.data.length; i++) {
-        var newrow =
+        if (res.data[i].jenis == "winner") {
+          var newrow =
+            "<tr><td>" +
+            nomer +
+            "</td><td>" +
+            res.data[i].nik +
+            "</td><td>" +
+            res.data[i].nama +
+            "</td><td>" +
+            res.data[i].departemen +
+            "</td><td>" +
+            res.data[i].hadiah +
+            "</td><td>" +
+            res.data[i].tgl +
+            "</td></tr>";
+          pemenang.insertAdjacentHTML("beforeend", newrow);
+          nomer++;
+        }else{
+          var newrow =
           "<tr><td>" +
-          nomer +
+          nomer1 +
           "</td><td>" +
           res.data[i].nik +
           "</td><td>" +
@@ -73,8 +94,9 @@ fetch(appurl + "/undian/getall", {
           "</td><td>" +
           res.data[i].tgl +
           "</td></tr>";
-        pemenang.insertAdjacentHTML("beforeend", newrow);
-        nomer++;
+          dis.insertAdjacentHTML("beforeend",newrow);
+          nomer1++;
+        }
       }
     } else {
       alert(res.error);
@@ -83,6 +105,7 @@ fetch(appurl + "/undian/getall", {
   .catch((error) => {
     console.log(error);
   });
+
 btn_check.addEventListener("click", function () {
   if (selHadiah.value == "" || ardat.length == 0) {
     alert("Hadiah belum dipilih!");
@@ -121,9 +144,9 @@ function getHadiah() {
     .then((res) => {
       if (res.status == "success") {
         imgHadiah.innerHTML =
-          "<img src='static/img/" +
+          "<img src='static/img/photo/" +
           res.data.gambar +
-          "' class='img-thumbnail'>";
+          "' class='img-fluid' style='width:auto; height:400px'>";
       } else {
         alert(res.error);
       }
@@ -138,36 +161,7 @@ btn_save.addEventListener("click", function () {
   } else {
     var y = confirm("Apakah anda akan menyimpan pemenang undian ?");
     if (y) {
-      let postObj = {
-        hadiah: prize,
-        nik: winner,
-      };
-      let post = JSON.stringify(postObj);
-      const url = appurl + "/undian/create";
-      fetch(url, {
-        method: "post",
-        body: post,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("undian_token"),
-        },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((res) => {
-          if (res.status == "success") {
-            //console.log(res.data.token);
-            alert("Pemenang berhasil disimpan");
-            window.location.href = appurl + "/main";
-          } else {
-            alert(res.error);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+     createUndian("winner");
     }
   }
 });
@@ -177,6 +171,18 @@ btn_logout.addEventListener("click", function (e) {
   localStorage.removeItem("undian_token");
   window.location.href = appurl;
 });
+
+btnDis.addEventListener("click",function () {
+  if (winner == "") {
+    alert("Pemenang belum dipilih !");
+  } else {
+    var y = confirm("Apakah anda akan diskualifikasi pemenang undian ?");
+    if (y) {
+     createUndian("dis");
+    }
+  }
+});
+
 function randomcheck() {
   winner = "";
   prize = "";
@@ -199,6 +205,40 @@ function randomcheck() {
       }, 2000);
     }
   }, 80);
+}
+
+function createUndian(win) {
+  let postObj = {
+    hadiah: prize,
+    nik: winner,
+    ket:win,
+  };
+  let post = JSON.stringify(postObj);
+  const url = appurl + "/undian/create";
+  fetch(url, {
+    method: "post",
+    body: post,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("undian_token"),
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((res) => {
+      if (res.status == "success") {
+        //console.log(res.data.token);
+        alert("Data berhasil disimpan");
+        window.location.href = appurl + "/main";
+      } else {
+        alert(res.error);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 function blinkBackground() {

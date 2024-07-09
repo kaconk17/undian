@@ -120,7 +120,7 @@ const deleteHadiah = async (req, res) => {
     const { rows } = await pool.query(findquery, [Id]);
     const dbResponse = rows[0];
     var gambar = dbResponse.gambar;
-    let filepath = path.join(__dirname, "../public/img/" + gambar);
+    let filepath = path.join(__dirname, "../public/img/photo/" + gambar);
     await pool.query(delQuery, [Id]);
     successMessage.data.message = "Hapus data berhasil";
     fs.unlinkSync(filepath);
@@ -132,7 +132,7 @@ const deleteHadiah = async (req, res) => {
 };
 
 const createUndian = async (req, res) => {
-  const { hadiah, nik } = req.body;
+  const { hadiah, nik, ket} = req.body;
 
   if (isEmpty(hadiah)) {
     errorMessage.error = "Nama hadiah tidak boleh kosong";
@@ -145,9 +145,9 @@ const createUndian = async (req, res) => {
 
   const created_on = moment(new Date());
   const createInQuery = `INSERT INTO
-      tb_undian (nik, id_hadiah, created_at)
-      VALUES($1, $2, $3) returning *`;
-  const values = [nik, hadiah, created_on];
+      tb_undian (nik, id_hadiah,jenis, created_at)
+      VALUES($1, $2, $3,$4) returning *`;
+  const values = [nik, hadiah,ket, created_on];
   try {
     const response = await pool.query(createInQuery, values);
     const Response = response.rows[0];
@@ -161,7 +161,7 @@ const createUndian = async (req, res) => {
 
 const getAllUndian = async (req, res) => {
   const getHadiahQuery =
-    "select a.nik, b.nama ,b.departemen , c.hadiah , to_char(a.created_at, 'YYYY-MM-DD HH24:MI') as tgl  from tb_undian a join tb_karyawan b on a.nik = b.nik join tb_hadiah c on a.id_hadiah = c.id";
+    "select a.nik, b.nama ,b.departemen , c.hadiah , a.jenis, to_char(a.created_at, 'YYYY-MM-DD') as tgl  from tb_undian a join tb_karyawan b on a.nik = b.nik join tb_hadiah c on a.id_hadiah = c.id";
 
   try {
     const { rows } = await pool.query(getHadiahQuery);

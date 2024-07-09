@@ -67,7 +67,7 @@ const uploadImg = async (req, res) => {
     if (req.file == undefined) {
       return res.status(400).send("Please upload a jpg file!");
     }
-    let filepath = path.join(__dirname, "../public/img/" + req.file.filename);
+    let filepath = path.join(__dirname, "../public/img/photo/" + req.file.filename);
 
     const { hadiah, qty } = req.body;
 

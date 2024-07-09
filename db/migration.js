@@ -61,7 +61,7 @@ const createHadiahTable = async () => {
 
 const createUndianTable = async () => {
   const dompetCreateQuery =
-    "CREATE TABLE IF NOT EXISTS tb_undian (id SERIAL PRIMARY KEY,nik VARCHAR(50) REFERENCES tb_karyawan(nik) ON DELETE CASCADE,id_hadiah int NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
+    "CREATE TABLE IF NOT EXISTS tb_undian (id SERIAL PRIMARY KEY,nik VARCHAR(50) REFERENCES tb_karyawan(nik) ON DELETE CASCADE,id_hadiah int NOT NULL, jenis VARCHAR(50) NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
 
   await pool
     .query(dompetCreateQuery)

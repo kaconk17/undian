@@ -28,7 +28,7 @@ fetch(appurl + "/hadiah/getall", {
           res.data[i].hadiah +
           "</td><td>" +
           res.data[i].qty +
-          "</td><td><img src='static/img/" +
+          "</td><td><img src='static/img/photo/" +
           res.data[i].gambar +
           "' class='img-fluid' style='heigth:50px;width:50px;'></td><td><button class='btn btn-danger' onClick='del_row(" +
           res.data[i].id +
