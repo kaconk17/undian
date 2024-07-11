@@ -161,7 +161,7 @@ const createUndian = async (req, res) => {
 
 const getAllUndian = async (req, res) => {
   const getHadiahQuery =
-    "select a.nik, b.nama ,b.departemen , c.hadiah , a.jenis, to_char(a.created_at, 'YYYY-MM-DD') as tgl  from tb_undian a join tb_karyawan b on a.nik = b.nik join tb_hadiah c on a.id_hadiah = c.id";
+    "select a.id, a.nik, b.nama ,b.departemen , c.hadiah , a.jenis, to_char(a.created_at, 'YYYY-MM-DD') as tgl  from tb_undian a join tb_karyawan b on a.nik = b.nik join tb_hadiah c on a.id_hadiah = c.id order by a.id asc";
 
   try {
     const { rows } = await pool.query(getHadiahQuery);
