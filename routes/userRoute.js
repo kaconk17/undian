@@ -26,7 +26,7 @@ router.get("/karyawan/getundi", verifyAuth, getUndikaryawan);
 
 router.get("/main", async (req, res) => {
   const getHadiahQuery =
-    "select a.id, a.hadiah, (a.qty - coalesce(b.jmlh,0)) as qty from (select * from tb_hadiah) a left join (select id_hadiah, count(id_hadiah) as jmlh from tb_undian group by id_hadiah) b on b.id_hadiah = a.id where (a.qty - coalesce(b.jmlh,0)) > 0 ORDER BY a.id DESC";
+    "select a.id, a.hadiah, (a.qty - coalesce(b.jmlh,0)) as qty from (select * from tb_hadiah) a left join (select id_hadiah, count(id_hadiah) as jmlh from tb_undian where jenis = 'winner' group by id_hadiah) b on b.id_hadiah = a.id where (a.qty - coalesce(b.jmlh,0)) > 0 ORDER BY a.id DESC";
   try {
     const { rows } = await pool.query(getHadiahQuery);
     res.render("main", { app_url: appUrl, hadiah: rows });
