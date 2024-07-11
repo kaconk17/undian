@@ -11,11 +11,11 @@ pool.on("connect", () => {
   console.log("berhasil koneksi ke DB");
 });
 
-const createUserTable = async () => {
+const createUserTable = () => {
   const userCreateQuery =
     "CREATE TABLE IF NOT EXISTS tb_users (id UUID PRIMARY KEY,nama VARCHAR(100) NOT NULL,email VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100) NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
 
-  await pool
+  pool
     .query(userCreateQuery)
     .then((res) => {
       console.log(res);
@@ -27,11 +27,11 @@ const createUserTable = async () => {
     });
 };
 
-const createKaryawantTable = async () => {
+const createKaryawantTable = () => {
   const dompetCreateQuery =
     "CREATE TABLE IF NOT EXISTS tb_karyawan (nik VARCHAR(50) PRIMARY KEY,nama VARCHAR(100) NOT NULL,departemen VARCHAR(100) NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
 
-  await pool
+  pool
     .query(dompetCreateQuery)
     .then((res) => {
       console.log(res);
@@ -43,11 +43,11 @@ const createKaryawantTable = async () => {
     });
 };
 
-const createHadiahTable = async () => {
+const createHadiahTable = () => {
   const dompetCreateQuery =
     "CREATE TABLE IF NOT EXISTS tb_hadiah (id SERIAL PRIMARY KEY,hadiah VARCHAR(100) NOT NULL, qty INT NOT NULL, gambar VARCHAR(100), created_at TIMESTAMP,updated_at TIMESTAMP)";
 
-  await pool
+  pool
     .query(dompetCreateQuery)
     .then((res) => {
       console.log(res);
@@ -59,11 +59,27 @@ const createHadiahTable = async () => {
     });
 };
 
-const createUndianTable = async () => {
+const createUndianTable = () => {
   const dompetCreateQuery =
     "CREATE TABLE IF NOT EXISTS tb_undian (id SERIAL PRIMARY KEY,nik VARCHAR(50) REFERENCES tb_karyawan(nik) ON DELETE CASCADE,id_hadiah int NOT NULL, jenis VARCHAR(50) NOT NULL,created_at TIMESTAMP,updated_at TIMESTAMP)";
 
-  await pool
+   pool
+    .query(dompetCreateQuery)
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+    });
+};
+
+const checkTable = () => {
+  const dompetCreateQuery =
+    "SELECT * FROM information_schema.tables WHERE table_schema = 'public'";
+
+   pool
     .query(dompetCreateQuery)
     .then((res) => {
       console.log(res);
@@ -80,6 +96,7 @@ const createAllTable = () => {
   createKaryawantTable();
   createHadiahTable();
   createUndianTable();
+  checkTable();
 };
 
 const createUser = async () => {
@@ -107,6 +124,22 @@ const createUser = async () => {
     });
 };
 
+const deleteUndian = async () => {
+  const userCreateQuery =
+    "DELETE FROM tb_undian";
+
+  await pool
+    .query(userCreateQuery)
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+    });
+};
+
 pool.on("remove", () => {
   console.log("client removed");
   process.exit(0);
@@ -115,6 +148,7 @@ pool.on("remove", () => {
 module.exports = {
   createAllTable,
   createUser,
+  deleteUndian,
 };
 
 if (process.argv[2] === "createAllTable") {
@@ -123,4 +157,12 @@ if (process.argv[2] === "createAllTable") {
 
 if (process.argv[2] === "createUser") {
   createUser();
+}
+
+if (process.argv[2] === "deleteUndian") {
+  deleteUndian();
+}
+
+if (process.argv[2] === "checkTable") {
+  checkTable();
 }
