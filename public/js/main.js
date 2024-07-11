@@ -106,6 +106,32 @@ fetch(appurl + "/undian/getall", {
     console.log(error);
   });
 
+
+
+  window.addEventListener("keypress",function(e){
+    if (e.keyCode == 32) {
+      if (selHadiah.value == "" || ardat.length == 0) {
+        alert("Hadiah belum dipilih!");
+      } else {
+        //btn_check.disabled = true;
+        if (undi) {
+          undi = false;
+          btn_check.innerHTML = "Start";
+          btn_check.className = "btn btn-success btn-lg";
+        } else {
+          undi = true;
+          btn_check.innerHTML = "Stop";
+          btn_check.className = "btn btn-danger btn-lg";
+        }
+        btn_save.disabled = true;
+        btnDis.disabled = true;
+    
+        randomcheck();
+      }
+    }
+  });
+
+
 btn_check.addEventListener("click", function () {
   if (selHadiah.value == "" || ardat.length == 0) {
     alert("Hadiah belum dipilih!");
@@ -148,6 +174,7 @@ function getHadiah() {
           "<img src='static/img/photo/" +
           res.data.gambar +
           "' class='img-fluid' style='width:auto; height:400px'>";
+          selHadiah.blur();
       } else {
         alert(res.error);
       }
