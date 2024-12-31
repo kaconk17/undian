@@ -26,8 +26,10 @@ router.get("/karyawan/getundi", verifyAuth, getUndikaryawan);
 
 router.get("/main", async (req, res) => {
   const getHadiahQuery =
-    "select a.id, a.hadiah, (a.qty - coalesce(b.jmlh,0)) as qty from (select * from tb_hadiah) a left join (select id_hadiah, count(id_hadiah) as jmlh from tb_undian where jenis = 'winner' group by id_hadiah) b on b.id_hadiah = a.id where (a.qty - coalesce(b.jmlh,0)) > 0 ORDER BY a.id DESC";
-  try {
+    // "select a.id, a.hadiah, (a.qty - coalesce(b.jmlh,0)) as qty from (select * from tb_hadiah) a left join (select id_hadiah, count(id_hadiah) as jmlh from tb_undian where jenis = 'winner' group by id_hadiah) b on b.id_hadiah = a.id where (a.qty - coalesce(b.jmlh,0)) > 0 ORDER BY a.id DESC";
+  "SELECT a.id, a.hadiah, (a.qty - COALESCE(b.jmlh, 0)) AS qty FROM (SELECT * FROM tb_hadiah) a LEFT JOIN (SELECT id_hadiah, COUNT(id_hadiah) AS jmlh FROM tb_undian WHERE jenis = 'winner' GROUP BY id_hadiah) b ON b.id_hadiah = a.id WHERE (a.qty - COALESCE(b.jmlh, 0)) > 0 ORDER BY a.id DESC ";
+
+    try {
     const { rows } = await pool.query(getHadiahQuery);
     res.render("main", { app_url: appUrl, hadiah: rows });
   } catch (error) {}
