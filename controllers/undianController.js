@@ -1,4 +1,5 @@
-const moment = require("moment");
+// const moment = require("moment");
+const moment = require('moment-timezone');
 const { pool } = require("../config/connection");
 
 const { empty, isEmpty } = require("../middlewares/validation");
@@ -11,7 +12,7 @@ const fs = require("fs");
 const path = require("path");
 
 const createHadiah = async (req, res) => {
-  const { hadiah, qty } = req.body;
+  const { hadiah, qty, level } = req.body;
 
   if (isEmpty(hadiah)) {
     errorMessage.error = "Nama hadiah tidak boleh kosong";
@@ -22,11 +23,11 @@ const createHadiah = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const created_on = moment(new Date());
+  const created_on = moment().tz('Asia/Jakarta').format('YYYY-MM-DD HH:mm:ss');
   const createInQuery = `INSERT INTO
-      tb_hadiah (hadiah, qty, created_at)
-      VALUES($1, $2, $3) returning *`;
-  const values = [hadiah, qty, created_on];
+      tb_hadiah (hadiah, qty, created_at, level_hadiah)
+      VALUES($1, $2, $3, $4) returning *`;
+  const values = [hadiah, qty, created_on, level];
   try {
     const response = await pool.query(createInQuery, values);
     const Response = response.rows[0];
@@ -62,12 +63,27 @@ const getHadiah = async (req, res) => {
   const getInQuery = "SELECT * FROM tb_hadiah WHERE id = $1";
   try {
     const { rows } = await pool.query(getInQuery, [Id]);
-    const inResponse = rows[0];
-    if (!inResponse) {
+    const inResponse1 = rows[0];
+
+    if (!inResponse1) {
       errorMessage.error = "ID tidak valid";
       return res.status(status.notfound).send(errorMessage);
     }
-    successMessage.data = inResponse;
+
+    // var getkaryawanQuery = "select a.* from tb_karyawan a where not exists (select 1 from tb_undian b where b.nik = a.nik)";
+    // if (inResponse1.level_hadiah != 0){
+    //   // getkaryawanQuery = "select a.* from tb_karyawan a where not exists (select 1 from tb_undian b where b.nik = a.nik) and status_karyawan = 'Tetap'";
+    //   getkaryawanQuery = 'test';
+    // }
+
+    var getkaryawanQuery = (inResponse1.level_hadiah != 0) ? "select a.* from tb_karyawan a where not exists (select 1 from tb_except b where b.nik = a.nik) and not exists (select 1 from tb_undian b where b.nik = a.nik)" : "select a.* from tb_karyawan a where not exists (select 1 from tb_undian b where b.nik = a.nik)";
+
+    const hasil = await pool.query(getkaryawanQuery);
+
+    const result = hasil.rows; 
+
+
+    successMessage.data = {inResponse:inResponse1, hasil:result};
     return res.status(status.success).send(successMessage);
   } catch (error) {
     errorMessage.error = "Operation was not successful";
@@ -78,6 +94,7 @@ const getHadiah = async (req, res) => {
 const updateHadiah = async (req, res) => {
   const { Id } = req.params;
   const { hadiah, qty } = req.body;
+
   if (isEmpty(Id)) {
     errorMessage.error = "ID tidak boleh kosong";
     return res.status(status.bad).send(errorMessage);
@@ -106,6 +123,7 @@ const updateHadiah = async (req, res) => {
     return res.status(status.error).send(errorMessage);
   }
 };
+
 const deleteHadiah = async (req, res) => {
   const { Id } = req.params;
   if (isEmpty(Id)) {
@@ -143,7 +161,7 @@ const createUndian = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const created_on = moment(new Date());
+  const created_on = moment().tz('Asia/Jakarta').format('YYYY-MM-DD HH:mm:ss');
   const createInQuery = `INSERT INTO
       tb_undian (nik, id_hadiah,jenis, created_at)
       VALUES($1, $2, $3,$4) returning *`;

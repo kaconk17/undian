@@ -7,14 +7,18 @@ const winName = document.getElementById("nama_pemenang");
 const jHadiah = document.getElementById("jHadiah");
 const imgHadiah = document.getElementById("imgHadiah");
 const btnDis = document.getElementById("btn-dis");
+const audioPlayer = document.getElementById('audioPlayer');
+const audioWin = document.getElementById('audioWin');
 
 var ardat = [];
 var namdat = [];
 var winner = "";
 var prize = "";
 var undi = false;
+var ext = [];
+var extName = [];
 
-const colors = ["#9966ff", "white"];
+const colors = ["#04ebfe", "white"];
 const bgBlink = document.getElementById("display_body");
 let currentColorIndex = 0;
 fetch(appurl + "/karyawan/getundi", {
@@ -141,10 +145,18 @@ btn_check.addEventListener("click", function () {
       undi = false;
       btn_check.innerHTML = "Start";
       btn_check.className = "btn btn-success btn-lg";
+
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+
+      audioWin.play();
     } else {
       undi = true;
       btn_check.innerHTML = "Stop";
       btn_check.className = "btn btn-danger btn-lg";
+
+      audioPlayer.loop = true;
+      audioPlayer.play();
     }
     btn_save.disabled = true;
     btnDis.disabled = true;
@@ -156,7 +168,7 @@ btn_check.addEventListener("click", function () {
 function getHadiah() {
   prize = selHadiah.value;
   jHadiah.innerHTML = selHadiah.selectedOptions[0].text;
-
+console.log(jHadiah);
   fetch(appurl + "/hadiah/get/" + prize, {
     method: "get",
     headers: {
@@ -170,9 +182,16 @@ function getHadiah() {
     })
     .then((res) => {
       if (res.status == "success") {
+        ext = [];
+        extName = [];
+        for (let i = 0; i < res.data.hasil.length; i++) {
+          ext.push(res.data.hasil[i].nik);
+          extName.push(res.data.hasil[i].nama);
+        }
+
         imgHadiah.innerHTML =
           "<img src='static/img/photo/" +
-          res.data.gambar +
+          res.data.inResponse.gambar +
           "' class='img-fluid' style='width:auto; height:400px'>";
           selHadiah.blur();
       } else {
@@ -183,6 +202,7 @@ function getHadiah() {
       console.log(error);
     });
 }
+
 btn_save.addEventListener("click", function () {
   if (winner == "") {
     alert("Pemenang belum dipilih !");
@@ -218,6 +238,7 @@ function randomcheck() {
   let interval = setInterval(() => {
     var indx = Math.floor(Math.random() * ardat.length);
     winner = ardat[indx];
+    //winner = ext[indx];
     prize = selHadiah.value;
     nik.innerHTML = winner;
     winName.innerHTML = namdat[indx];
@@ -233,7 +254,7 @@ function randomcheck() {
         btnDis.disabled = false;
       }, 2000);
     }
-  }, 80);
+  }, 50);
 }
 
 function createUndian(win) {
@@ -259,7 +280,7 @@ function createUndian(win) {
     .then((res) => {
       if (res.status == "success") {
         //console.log(res.data.token);
-        alert("Data berhasil disimpan");
+        // alert("Data berhasil disimpan");
         window.location.href = appurl + "/main";
       } else {
         alert(res.error);

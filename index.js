@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 3001;
 const path = require("path");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const userRoute = require("./routes/userRoute");
 const undianRoute = require("./routes/undianRoute");
+process.env.TZ = 'Asia/Jakarta';
 app.set("view engine", "ejs");
 //const bootstrap = require('bootstrap')
 app.use(bodyParser.json());

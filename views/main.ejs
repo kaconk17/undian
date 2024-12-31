@@ -23,19 +23,19 @@
         <div class="row text-center">
 
             <div>
-                <h2>Undian Hadiah Sweet 17</h2>
+                <h2>Undian Hadiah Happy new year 2025</h2>
             </div>
         </div>
         <div class="row justify-content-md-center">
             <div class="card col-md-8">
                 <div id="display_body" class="card-body" style="height: 30rem;">
-                    <div class="row" style="margin-top: 10%;">
+                    <div class="row" style="margin-top: 2%;">
 
                         <div class="col text-end">
-                            <h1 class="display-1" style="font-size: 10rem; font-weight: bold;">NIK : </h1>
+                            <h1 class="display-1" style="font-size: 15rem; font-weight: bold;">NIK : </h1>
                         </div>
                         <div class="col">
-                            <h1 class="display-1" id="nik" style="font-size: 10rem;font-weight: bold;">XXXX</h1>
+                            <h1 class="display-1" id="nik" style="font-size: 15rem;font-weight: bold;">XXXX</h1>
                         </div>
                     </div>
                     <div class="row text-center">
@@ -46,6 +46,8 @@
                     <div class="row justify-content-md-center">
                         <div class="col-md-2 text-center">
                             <button id="btn-check" class="btn btn-success btn-lg">Start</button>
+                            <audio id="audioPlayer" src="static/audio/drum_roll.mp3"></audio>
+                            <audio id="audioWin" src="static/audio/applause.mp3"></audio>
                         </div>
                         <div class="col-md-2 text-center">
                             <button id="btn-save" class="btn btn-primary btn-lg">Save</button>
@@ -81,7 +83,7 @@
                 <select class="form-select" onchange="getHadiah()" name="" id="hadiah">
                     <option value="">---pilih hadiah----</option>
                     <% for(var i=0; i < hadiah.length; i++) { %>
-                    <option value="<%= hadiah[i].id %>"><%= hadiah[i].hadiah %></option>
+                    <option value="<%= hadiah[i].id %>"><%= hadiah[i].hadiah %> (<%=hadiah[i].qty %> Pcs)</option>
                     <% } %>
                 </select>
             </div>
